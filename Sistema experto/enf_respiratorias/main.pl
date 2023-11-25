@@ -1,5 +1,6 @@
-bc :- consult('enfermedades.pl').
-
+bc :- consult('SSPIAI_23B_Proyecto05/Sistema experto/enf_respiratorias/enfermedades.pl').
+:- initialization(bc).
+:- dynamic pivote/1.
 %Menú
 inicio :- nl,
     write('---Menu---'), nl, 
@@ -55,7 +56,11 @@ opcion(_) :- write('Revisa que el numero ingresado corresponda a una opcion (1-8
 % preg27 :- write('') read(Op), preg1(Op).
 % preg28 :- write('') read(Op), preg1(Op).
 
-
+pivote([]).
+descartar([]).
+descartar([H|T]) :- pivote(Lista), sintomas(Enf, Sin), member(H, Sin), insertar(Enf,Lista,ListaRes), 
+                    retract(pivote(Lista)), sort(ListaRes, ListaSor),assert(pivote(ListaSor)), 
+                    write(ListaSor),descartar(T).
 
 %Listar
 listar :- write('Que lista va a mostrar (volador, acuatico, domestico, venenoso, nocturno): '),
