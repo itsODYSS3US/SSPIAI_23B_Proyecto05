@@ -1,12 +1,12 @@
-bc :- consult('SSPIAI_23B_Proyecto05/Sistema experto/enfermedades.pl').
+bc :- consult('enfermedades.pl').
 :- initialization(bc).
 
 
 agregar_enfermedad :-
     write('Ingrese el nombre de la enfermedad: '),
     read(Enfermedad),
-    open('SSPIAI_23B_Proyecto05/Sistema experto/enfermedades.pl', append, Stream),
-    write(Stream, Enfermedad), write(Stream, ' :-\n'),
+    open('enfermedades.pl', append, Stream),
+    write(Stream, '    enfermedad(' ),write(Stream, Enfermedad), write(Stream, ') :-\n'),
     agregar_sintomas(Stream, []),
     write(Stream, '.\n'),
     close(Stream).
