@@ -1,14 +1,70 @@
+% enfermedades([asma,neumonia,bronquitis,bronquiolitis,gripe,tuberculosis]).
+
+% asma :- 
+%     sintoma('Tos'),
+%     sintoma('Problemas para dormir'),
+%     sintoma('Dolor de pecho'),
+%     sintoma('Falta de aire'),
+%     sintoma('Silibacia').
+
+% neumonia :-
+%     sintoma('Tos con flema'),
+%     sintoma('Fiebre'),
+%     sintoma('Escalofrios'),
+%     sintoma('Dificulta para respirar'),
+%     sintoma('Sudoracion'),
+%     sintoma('Perdida de apetito'),
+%     sintoma('Fatiga').
+
+% bronquitis :-
+%     sintoma('Tos'),
+%     sintoma('Tos con flema'),
+%     sintoma('Dolor en pecho'),
+%     sintoma('Dolor de cabeza'),
+%     sintoma('Cansancio'),
+%     sintoma('Dolor de garganta').
+
+% bronquiolitis :- 
+%     sintoma('Tos'),
+%     sintoma('Fiebre'),
+%     sintoma('Congestion nasal'),
+%     sintoma('Mucosidad'),
+%     sintoma('Silibancia'),
+%     sintoma('Dificultad para respirar'),
+%     sintoma('Infeccion en el oido'),
+%     sintoma('Deshidratacion').
+
+% gripe :-
+%     sintoma('Tos'),
+%     sintoma('Fiebre'),
+%     sintoma('Tos con flema'),
+%     sintoma('Congestion nasal'),
+%     sintoma('Dolor muscular'),
+%     sintoma('Dolor de cabeza'),
+%     sintoma('Dolor de garganta'),
+%     sintoma('Fatiga').
+
+% tuberculosis :-
+%     sintoma('Tos con flema'),
+%     sintoma('Fiebre'),
+%     sintoma('Fatiga'),
+%     sintoma('Dolor en pecho'),
+%     sintoma('Tos intensa'),
+%     sintoma('Escalofrios'),
+%     sintoma('Sudoracion'). 
+
+
 
 enfermedades([asma,neumonia,bronquitis,bronquiolitis,gripe,tuberculosis]).
 
-asma :- 
+enfermedad(asma) :- 
     sintoma('Tos'),
     sintoma('Problemas para dormir'),
     sintoma('Dolor de pecho'),
     sintoma('Falta de aire'),
     sintoma('Silibacia').
 
-neumonia :-
+enfermedad(neumonia) :-
     sintoma('Tos con flema'),
     sintoma('Fiebre'),
     sintoma('Escalofrios'),
@@ -17,7 +73,7 @@ neumonia :-
     sintoma('Perdida de apetito'),
     sintoma('Fatiga').
 
-bronquitis :-
+enfermedad(bronquitis) :-
     sintoma('Tos'),
     sintoma('Tos con flema'),
     sintoma('Dolor en pecho'),
@@ -25,7 +81,7 @@ bronquitis :-
     sintoma('Cansancio'),
     sintoma('Dolor de garganta').
 
-bronquiolitis :- 
+enfermedad(bronquiolitis) :- 
     sintoma('Tos'),
     sintoma('Fiebre'),
     sintoma('Congestion nasal'),
@@ -35,7 +91,7 @@ bronquiolitis :-
     sintoma('Infeccion en el oido'),
     sintoma('Deshidratacion').
 
-gripe :-
+enfermedad(gripe) :-
     sintoma('Tos'),
     sintoma('Fiebre'),
     sintoma('Tos con flema'),
@@ -45,7 +101,7 @@ gripe :-
     sintoma('Dolor de garganta'),
     sintoma('Fatiga').
 
-tuberculosis :-
+enfermedad(tuberculosis) :-
     sintoma('Tos con flema'),
     sintoma('Fiebre'),
     sintoma('Fatiga'),
@@ -53,5 +109,3 @@ tuberculosis :-
     sintoma('Tos intensa'),
     sintoma('Escalofrios'),
     sintoma('Sudoracion'). 
-
-
