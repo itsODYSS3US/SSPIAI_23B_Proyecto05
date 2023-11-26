@@ -1,5 +1,4 @@
 
-
 enfermedades([asma,neumonia,bronquitis,bronquiolitis,gripe,tuberculosis]).
 
 asma :- 

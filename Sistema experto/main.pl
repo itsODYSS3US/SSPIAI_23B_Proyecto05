@@ -1,7 +1,6 @@
 bc :- consult('SSPIAI_23B_Proyecto05/Sistema experto/enfermedades.pl').
 :- initialization(bc).
 
-
 agregar_enfermedad :-
     write('Ingrese el nombre de la enfermedad: '),
     read(Enfermedad),
@@ -34,12 +33,20 @@ iniciar :-
     nl, deshacer.
 
 preguntar(Pregunta) :-
-    write('El paciente tiene alguno de estos sintomas: '),
+    repeat,
+    write('El paciente tiene alguno de estos síntomas: '),
     write(Pregunta),
-    write(' ?'),
+    write(' ? (si/no)'),
     read(Respuesta),
     nl,
-    ((Respuesta == si) -> assert(si(Pregunta)) ; assert(no(Pregunta)), fail).
+    validar_respuesta(Respuesta),
+    ((Respuesta == si) -> assert(si(Pregunta)) ; assert(no(Pregunta)), !).
+
+validar_respuesta(si) :- !.
+validar_respuesta(no) :- !.
+validar_respuesta(_) :-
+    write('Por favor, responde con "si" o "no".'), nl,
+    fail.
 
 sintoma(S) :-
     (si(S) -> true ; (no(S) -> fail ; preguntar(S))).
