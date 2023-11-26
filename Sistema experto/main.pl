@@ -41,8 +41,6 @@ preguntar(Pregunta) :-
     nl,
     ((Respuesta == si) -> assert(si(Pregunta)) ; assert(no(Pregunta)), fail).
 
-:- dynamic si/1,no/1.
-
 sintoma(S) :-
     (si(S) -> true ; (no(S) -> fail ; preguntar(S))).
 
