@@ -5,7 +5,7 @@ agregar_enfermedad :-
     write('Ingrese el nombre de la enfermedad: '),
     read(Enfermedad),
     open('enfermedades.pl', append, Stream),
-    write(Stream, '    enfermedad(' ),write(Stream, Enfermedad), write(Stream, ') :-\n'),
+    write(Stream, '\n   enfermedad(' ),write(Stream, Enfermedad), write(Stream, ') :-\n'),
     agregar_sintomas(Stream, []),
     write(Stream, '.\n'),
     close(Stream).
@@ -28,7 +28,7 @@ escribir_sintomas(Stream, [Sintoma|Resto]) :-
 
 iniciar :- 
     analisis(Enfermedad),
-    ((Enfermedad == desconocido) -> write('Tu diagnostico es: ') ; write('Es probable que tengas: '), true),
+    ((Enfermedad == desconocido) -> write('Los síntomas no coinciden con la base de conocimiento') ; write('Es probable que tengas: '), true),
     write(Enfermedad),
     nl, deshacer.
 
@@ -38,14 +38,14 @@ preguntar(Pregunta) :-
     write(' ?'),
     read(Respuesta),
     nl,
-    validar_respuesta(Respuesta),
+    % validar_respuesta(Respuesta),
     ((Respuesta == si) -> assert(si(Pregunta)) ; assert(no(Pregunta)), fail).
 
-validar_respuesta(si) :- !.
-validar_respuesta(no) :- !.
-validar_respuesta(_) :-
-    write('Por favor, responde con "si" o "no".'), nl,
-    fail.
+% validar_respuesta(si) :- !.
+% validar_respuesta(no) :- !.
+% validar_respuesta(_) :-
+%     write('Por favor, responde con "si" o "no".'), nl,
+%     fail.
 
 :- dynamic si/1,no/1.
 
@@ -66,4 +66,4 @@ deshacer :- retract(no(_)),fail.
 analisis(Enfermedad) :-
     enfermedades(Enfermedades),
     member(Enfermedad, Enfermedades),
-    enfermedad(Enfermedad).
+    enfermedad(Enfermedad), !.
