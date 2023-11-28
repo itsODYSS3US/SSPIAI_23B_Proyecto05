@@ -1,6 +1,6 @@
 % enfermedades([asma,neumonia,bronquitis,bronquiolitis,gripe,tuberculosis]).
 
-% asma :- 
+% asma :-
 %     sintoma('Tos'),
 %     sintoma('Problemas para dormir'),
 %     sintoma('Dolor de pecho'),
@@ -54,9 +54,6 @@
 %     sintoma('Sudoracion'). 
 
 
-
-enfermedades([asma,neumonia,bronquitis,bronquiolitis,gripe,tuberculosis]).
-
 enfermedad(asma) :- 
     sintoma('Tos'),
     sintoma('Problemas para dormir'),
@@ -109,3 +106,4 @@ enfermedad(tuberculosis) :-
     sintoma('Tos intensa'),
     sintoma('Escalofrios'),
     sintoma('Sudoracion'). 
+

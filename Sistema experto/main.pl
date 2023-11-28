@@ -1,17 +1,19 @@
 bc :- consult('enfermedades.pl').
+bc :-consult('lista_enfermedades.pl').
 :- initialization(bc).
 
 agregar_enfermedad :-
     write('Ingrese el nombre de la enfermedad: '),
     read(Enfermedad),
+    agregar_enfermedad_lista(Enfermedad),
     open('enfermedades.pl', append, Stream),
-    write(Stream, '    enfermedad(' ),write(Stream, Enfermedad), write(Stream, ') :-\n'),
+    write(Stream, '\n   enfermedad(' ),write(Stream, Enfermedad), write(Stream, ') :-\n'),
     agregar_sintomas(Stream, []),
     write(Stream, '.\n'),
     close(Stream).
 
 agregar_sintomas(Stream, Sintomas) :-
-    write('Ingrese un síntoma (o "fin" para terminar): '),
+    write('Ingrese un sintoma (o "fin" para terminar): '),
     read(Sintoma),
     ( Sintoma == fin ->
         escribir_sintomas(Stream, Sintomas) ;
@@ -23,6 +25,26 @@ escribir_sintomas(Stream, [Sintoma]) :-
 escribir_sintomas(Stream, [Sintoma|Resto]) :-
     write(Stream, '    sintoma(\''), write(Stream, Sintoma), write(Stream, '\'),\n'),
     escribir_sintomas(Stream, Resto).
+
+
+
+
+
+agregar_enfermedad_lista(Enfermedad) :-
+    enfermedades(Lista),
+    insertar(Enfermedad,Lista,Lr),
+    retract(enfermedades(Lista)),
+    % write('esta es la enfermedad'), write(Enfermedad), nl,
+    assertz(enfermedades(Lr)),
+    guardar, write('La base de conocimientos ha sido actualizada...'), nl.
+
+% agregar(Elemento,Tipo) :- animales(Tipo,Lista),
+%     buscar1(Elemento,Lista),
+%     write('El elemento que desea agregar ya se encuentra en la lista'), nl.
+
+    guardar :- tell('lista_enfermedades.pl'), listing(enfermedades/1), told.
+insertar(E,L,Lr) :- Lr = [E|L].
+
 
 
 
