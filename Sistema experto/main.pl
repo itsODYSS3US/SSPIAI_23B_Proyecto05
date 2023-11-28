@@ -48,9 +48,11 @@ insertar(E,L,Lr) :- Lr = [E|L].
 
 
 
-iniciar :- 
+
+iniciar :-
+    deshacer,
     analisis(Enfermedad),
-    ((Enfermedad == desconocido) -> write('Tu diagnostico es: ') ; write('Es probable que tengas: '), true),
+    ((Enfermedad == desconocido) -> write('Los síntomas no coinciden con la base de conocimiento') ; write('Es probable que tengas: '), true),
     write(Enfermedad),
     nl, deshacer.
 
@@ -60,14 +62,14 @@ preguntar(Pregunta) :-
     write(' ?'),
     read(Respuesta),
     nl,
-    validar_respuesta(Respuesta),
+    % validar_respuesta(Respuesta),
     ((Respuesta == si) -> assert(si(Pregunta)) ; assert(no(Pregunta)), fail).
 
-validar_respuesta(si) :- !.
-validar_respuesta(no) :- !.
-validar_respuesta(_) :-
-    write('Por favor, responde con "si" o "no".'), nl,
-    fail.
+% validar_respuesta(si) :- !.
+% validar_respuesta(no) :- !.
+% validar_respuesta(_) :-
+%     write('Por favor, responde con "si" o "no".'), nl,
+%     fail.
 
 :- dynamic si/1,no/1.
 
@@ -88,4 +90,43 @@ deshacer :- retract(no(_)),fail.
 analisis(Enfermedad) :-
     enfermedades(Enfermedades),
     member(Enfermedad, Enfermedades),
-    enfermedad(Enfermedad).
+    enfermedad(Enfermedad), !.
+
+% Predicados para representar las opciones del men�
+opcion(1, 'Consulta').
+opcion(2, 'Agregar').
+opcion(3, 'Salir').
+
+
+% Predicado para imprimir el men�
+imprimir_menu :-
+    writeln('Men�:'),
+    forall(opcion(Opcion, Texto), format('~d. ~w~n', [Opcion, Texto])).
+
+% Predicado para procesar la elecci�n del usuario
+procesar_opcion(1) :-
+    writeln('Bienvenido a consulta.'),
+    iniciar,
+    nl.
+
+
+procesar_opcion(2) :-
+    writeln('Ingrese nueva enfermedad.'),
+    agregar_enfermedad,
+    nl.
+
+procesar_opcion(3) :-
+     writeln('Saliendo del programa.').
+
+
+procesar_opcion(Opcion) :-
+    Opcion \= 1, Opcion \= 2, Opcion \= 3,
+    writeln('Opci�n no v�lida. Por favor, elige una opci�n v�lida.').
+
+% Consulta principal para ejecutar el men�
+menu :-
+    repeat,
+    imprimir_menu,
+    write('Elige una opci�n: '), read(Opcion),
+    procesar_opcion(Opcion),
+    (Opcion == 3, ! ; fail).

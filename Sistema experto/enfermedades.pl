@@ -1,3 +1,5 @@
+% :- dynamic enfermedades/1.
+
 % enfermedades([asma,neumonia,bronquitis,bronquiolitis,gripe,tuberculosis]).
 
 % asma :-
@@ -65,7 +67,7 @@ enfermedad(neumonia) :-
     sintoma('Tos con flema'),
     sintoma('Fiebre'),
     sintoma('Escalofrios'),
-    sintoma('Dificulta para respirar'),
+    sintoma('Dificultad para respirar'),
     sintoma('Sudoracion'),
     sintoma('Perdida de apetito'),
     sintoma('Fatiga').
@@ -104,6 +106,4 @@ enfermedad(tuberculosis) :-
     sintoma('Fatiga'),
     sintoma('Dolor en pecho'),
     sintoma('Tos intensa'),
-    sintoma('Escalofrios'),
-    sintoma('Sudoracion'). 
-
+    sintoma('Sudoracion').     
