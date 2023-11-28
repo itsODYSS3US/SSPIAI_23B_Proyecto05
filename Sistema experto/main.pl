@@ -1,5 +1,4 @@
-bc :- consult('enfermedades.pl').
-bc :-consult('lista_enfermedades.pl').
+bc :- consult('enfermedades.pl'), consult('lista_enfermedades.pl').
 :- initialization(bc).
 
 agregar_enfermedad :-
@@ -26,17 +25,19 @@ escribir_sintomas(Stream, [Sintoma|Resto]) :-
     write(Stream, '    sintoma(\''), write(Stream, Sintoma), write(Stream, '\'),\n'),
     escribir_sintomas(Stream, Resto).
 
-
-
+insertar_final(Elemento, [], [Elemento]).
+insertar_final(Elemento, [Cabeza|Cola], [Cabeza|ListaResultado]) :-
+    insertar_final(Elemento, Cola, ListaResultado).
 
 
 agregar_enfermedad_lista(Enfermedad) :-
     enfermedades(Lista),
-    insertar(Enfermedad,Lista,Lr),
+    insertar_final(Enfermedad, Lista, Lr),
     retract(enfermedades(Lista)),
-    % write('esta es la enfermedad'), write(Enfermedad), nl,
     assertz(enfermedades(Lr)),
-    guardar, write('La base de conocimientos ha sido actualizada...'), nl.
+    guardar,
+    write('La base de conocimientos ha sido actualizada...'), nl.
+
 
 % agregar(Elemento,Tipo) :- animales(Tipo,Lista),
 %     buscar1(Elemento,Lista),
@@ -46,15 +47,17 @@ agregar_enfermedad_lista(Enfermedad) :-
 insertar(E,L,Lr) :- Lr = [E|L].
 
 
-
-
-
 iniciar :-
     deshacer,
+    bc,
     analisis(Enfermedad),
-    ((Enfermedad == desconocido) -> write('Los síntomas no coinciden con la base de conocimiento') ; write('Es probable que tengas: '), true),
-    write(Enfermedad),
+    (Enfermedad == desconocido ->
+        writeln('No se encontro una enfermedad que coincida con los sintomas');
+        (write('Es probable que tengas: '), true)
+    ),
+    ((Enfermedad \== desconocido) -> write(Enfermedad) ; true),
     nl, deshacer.
+
 
 preguntar(Pregunta) :-
     write('El paciente tiene alguno de estos sintomas: '),
@@ -78,32 +81,33 @@ sintoma(S) :-
 
 deshacer :- retract(si(_)),fail.
 deshacer :- retract(no(_)),fail.
+deshacer.
 
-
-% analisis(asma) :- asma, !.
-% analisis(neumonia) :- neumonia, !.
-% analisis(bronquitis) :- bronquitis, !.
-% analisis(bronquiolitis) :- bronquiolitis, !.
-% analisis(gripe) :- gripe, !.
-% analisis(tuberculosis) :- tuberculosis, !.
+% analisis(Enfermedad) :-
+%     enfermedades(Enfermedades),
+%     member(Enfermedad, Enfermedades),
+%     enfermedad(Enfermedad), !.
 
 analisis(Enfermedad) :-
     enfermedades(Enfermedades),
-    member(Enfermedad, Enfermedades),
-    enfermedad(Enfermedad), !.
+    (member(Enfermedad, Enfermedades), enfermedad(Enfermedad) ->
+        true ;
+        Enfermedad = desconocido
+    ).
 
-% Predicados para representar las opciones del men�
+
+% Predicados para representar las opciones del menu
 opcion(1, 'Consulta').
 opcion(2, 'Agregar').
 opcion(3, 'Salir').
 
 
-% Predicado para imprimir el men�
+% Predicado para imprimir el menu
 imprimir_menu :-
-    writeln('Men�:'),
+    writeln('Menu:'),
     forall(opcion(Opcion, Texto), format('~d. ~w~n', [Opcion, Texto])).
 
-% Predicado para procesar la elecci�n del usuario
+% Predicado para procesar la eleccion del usuario
 procesar_opcion(1) :-
     writeln('Bienvenido a consulta.'),
     iniciar,
@@ -121,12 +125,12 @@ procesar_opcion(3) :-
 
 procesar_opcion(Opcion) :-
     Opcion \= 1, Opcion \= 2, Opcion \= 3,
-    writeln('Opci�n no v�lida. Por favor, elige una opci�n v�lida.').
+    writeln('Opcion no vaida. Por favor, elige una opcion valida.').
 
-% Consulta principal para ejecutar el men�
+% Consulta principal para ejecutar el menu
 menu :-
     repeat,
     imprimir_menu,
-    write('Elige una opci�n: '), read(Opcion),
+    write('Elige una opcion: '), read(Opcion),
     procesar_opcion(Opcion),
     (Opcion == 3, ! ; fail).
