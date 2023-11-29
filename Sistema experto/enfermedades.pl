@@ -48,4 +48,4 @@ enfermedad(tuberculosis) :-
     sintoma('Fatiga'),
     sintoma('Dolor en pecho'),
     sintoma('Tos intensa'),
-    sintoma('Sudoracion').     
+    sintoma('Sudoracion').
