@@ -3,7 +3,7 @@ enfermedad(asma) :-
     sintoma('Problemas para dormir'),
     sintoma('Dolor de pecho'),
     sintoma('Falta de aire'),
-    sintoma('Silibacia').
+    sintoma('Sibilancia').
 
 enfermedad(neumonia) :-
     sintoma('Tos con flema'),
@@ -27,7 +27,7 @@ enfermedad(bronquiolitis) :-
     sintoma('Fiebre'),
     sintoma('Congestion nasal'),
     sintoma('Mucosidad'),
-    sintoma('Silibancia'),
+    sintoma('Sibilancia'),
     sintoma('Dificultad para respirar'),
     sintoma('Infeccion en el oido'),
     sintoma('Deshidratacion').

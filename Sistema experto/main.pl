@@ -66,14 +66,14 @@ preguntar(Pregunta) :-
     write(' ?'),
     read(Respuesta),
     nl,
-    % validar_respuesta(Respuesta),
+    validar_respuesta(Pregunta, Respuesta),
     ((Respuesta == si) -> assert(si(Pregunta)) ; assert(no(Pregunta)), fail).
 
-% validar_respuesta(si) :- !.
-% validar_respuesta(no) :- !.
-% validar_respuesta(_) :-
-%     write('Por favor, responde con "si" o "no".'), nl,
-%     fail.
+validar_respuesta(_, si) :- !.
+validar_respuesta(_, no) :- !.
+validar_respuesta(Pregunta, _) :-
+    write('Por favor, responde con "si" o "no".'), nl,
+    preguntar(Pregunta).
 
 :- dynamic si/1,no/1.
 
