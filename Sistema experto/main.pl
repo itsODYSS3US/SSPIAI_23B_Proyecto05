@@ -1,4 +1,4 @@
-bc :- consult('enfermedades.pl'), consult('lista_enfermedades.pl').
+bc :- consult('enfermedades.pl'), consult('lista_enfermedades.pl'), consult('sintomas.pl'), consult('listas.pl').
 :- initialization(bc).
 
 agregar_enfermedad :-
@@ -7,22 +7,24 @@ agregar_enfermedad :-
     validar_lista(Enfermedad),
     open('enfermedades.pl', append, Stream),
     write(Stream, '\n   enfermedad(' ),write(Stream, Enfermedad), write(Stream, ') :-\n'),
-    agregar_sintomas(Stream, []),
+    agregar_sintomas(Enfermedad,Stream, []),
     write(Stream, '.\n'),
     close(Stream).
 
-agregar_sintomas(Stream, Sintomas) :-
-    write('Ingrese un sintoma (o "fin" para terminar): '),
+agregar_sintomas(Enfermedad, Stream, Sintomas) :-
+    write('Ingrese un sintoma o causa entre comillas simples (o fin para terminar): '),
     read(Sintoma),
     ( Sintoma == fin ->
+        assertz(sintomas(Enfermedad, Sintomas)),
+        guardar_sintomas,
         escribir_sintomas(Stream, Sintomas) ;
-        agregar_sintomas(Stream, [Sintoma|Sintomas])
+        agregar_sintomas(Enfermedad, Stream, [Sintoma|Sintomas])
     ).
 
 escribir_sintomas(Stream, [Sintoma]) :-
-    !, write(Stream, '    sintoma(\''), write(Stream, Sintoma), write(Stream, '\')').
+    !, write(Stream, '    sintoma_causa(\''), write(Stream, Sintoma), write(Stream, '\')').
 escribir_sintomas(Stream, [Sintoma|Resto]) :-
-    write(Stream, '    sintoma(\''), write(Stream, Sintoma), write(Stream, '\'),\n'),
+    write(Stream, '    sintoma_causa(\''), write(Stream, Sintoma), write(Stream, '\'),\n'),
     escribir_sintomas(Stream, Resto).
 
 insertar_final(Elemento, [], [Elemento]).
@@ -40,20 +42,24 @@ agregar_enfermedad_lista(Enfermedad) :-
 validar_lista(Enfermedad):-
     enfermedades(Enfermedades),
     (member(Enfermedad, Enfermedades) ->
-        write('La enfermedad ya existe en la base de conocimiento,\n'), menu;
+        write('La enfermedad ya existe en la base de conocimiento,\n'),fail ;
         agregar_enfermedad_lista(Enfermedad)).
 
 
     guardar :- tell('lista_enfermedades.pl'), listing(enfermedades/1), told.
 insertar(E,L,Lr) :- Lr = [E|L].
 
+guardar_sintomas :-
+    tell('sintomas.pl'),
+    listing(sintomas/2),
+    told.
 
 iniciar :-
     deshacer,
     bc,
     analisis(Enfermedad),
     (Enfermedad == desconocido ->
-        writeln('No se encontro una enfermedad que coincida con los sintomas');
+        realizar_pruebas, iniciar1;
         (write('Es probable que tengas: '), true)
     ),
     ((Enfermedad \== desconocido) -> write(Enfermedad) ; true),
@@ -61,9 +67,8 @@ iniciar :-
 
 
 preguntar(Pregunta) :-
-    write('El paciente tiene alguno de estos sintomas: '),
-    write(Pregunta),
-    write(' ?'),
+    write('El paciente presenta el siguiente sintoma o causa? '),
+    write(Pregunta), write(' :'),
     read(Respuesta),
     nl,
     validar_respuesta(Pregunta, Respuesta),
@@ -77,17 +82,12 @@ validar_respuesta(Pregunta, _) :-
 
 :- dynamic si/1,no/1.
 
-sintoma(S) :-
+sintoma_causa(S) :-
     (si(S) -> true ; (no(S) -> fail ; preguntar(S))).
 
 deshacer :- retract(si(_)),fail.
 deshacer :- retract(no(_)),fail.
 deshacer.
-
-% analisis(Enfermedad) :-
-%     enfermedades(Enfermedades),
-%     member(Enfermedad, Enfermedades),
-%     enfermedad(Enfermedad), !.
 
 analisis(Enfermedad) :-
     enfermedades(Enfermedades),
@@ -97,41 +97,16 @@ analisis(Enfermedad) :-
     ).
 
 
-% Predicados para representar las opciones del menu
-opcion(1, 'Consulta').
-opcion(2, 'Agregar').
-opcion(3, 'Salir').
+inicio :- nl,
+    write('---Menu---'), nl, 
+    write('1. Consultar'), nl, 
+    write('2. Agregar'), nl, 
+    write('3. Salir'), nl, 
+    write('Ingresa una opcion (1-3)'), nl, 
+    read(Op), opcion(Op), !.
 
 
-% Predicado para imprimir el menu
-imprimir_menu :-
-    writeln('Menu:'),
-    forall(opcion(Opcion, Texto), format('~d. ~w~n', [Opcion, Texto])).
-
-% Predicado para procesar la eleccion del usuario
-procesar_opcion(1) :-
-    writeln('Bienvenido a consulta.'),
-    iniciar,
-    nl.
-
-
-procesar_opcion(2) :-
-    writeln('Ingrese nueva enfermedad.'),
-    agregar_enfermedad,
-    nl.
-
-procesar_opcion(3) :-
-     writeln('Saliendo del programa.').
-
-
-procesar_opcion(Opcion) :-
-    Opcion \= 1, Opcion \= 2, Opcion \= 3,
-    writeln('Opcion no vaida. Por favor, elige una opcion valida.').
-
-% Consulta principal para ejecutar el menu
-menu :-
-    repeat,
-    imprimir_menu,
-    write('Elige una opcion: '), read(Opcion),
-    procesar_opcion(Opcion),
-    (Opcion == 3, ! ; fail).
+opcion(1) :- iniciar, inicio. 
+opcion(2) :- agregar_enfermedad, write('Base de conocimiento actualizada'), inicio. 
+opcion(3) :- write('Fin de programa...'), !. 
+opcion(_) :- write('Revisa que el numero ingresado corresponda a una opcion (1-3) '), inicio. 

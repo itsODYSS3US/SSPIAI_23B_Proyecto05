@@ -1,51 +1,57 @@
+preguntas(['Tos seca', 'Tos con flema', 
+            'Fiebre', 'Sibilancia', 'Congestion nasal', 
+            'Dolor de pecho', 'Dolor de cabeza',
+            'Fatiga', 'Dificultad para respirar','Sudoracion']).
+
 enfermedad(asma) :- 
-    sintoma('Tos'),
-    sintoma('Problemas para dormir'),
-    sintoma('Dolor de pecho'),
-    sintoma('Falta de aire'),
-    sintoma('Sibilancia').
+    sintoma_causa('Tos seca'),
+    sintoma_causa('Dolor de pecho'),
+    sintoma_causa('Dificultad para respirar'),
+    sintoma_causa('Sibilancia'),
+    sintoma_causa('Problemas para dormir').
 
 enfermedad(neumonia) :-
-    sintoma('Tos con flema'),
-    sintoma('Fiebre'),
-    sintoma('Escalofrios'),
-    sintoma('Dificultad para respirar'),
-    sintoma('Sudoracion'),
-    sintoma('Perdida de apetito'),
-    sintoma('Fatiga').
+    sintoma_causa('Tos con flema'),
+    sintoma_causa('Fiebre'),
+    sintoma_causa('Fatiga'),
+    sintoma_causa('Dificultad para respirar'),
+    sintoma_causa('Sudoracion'),
+    sintoma_causa('Perdida de apetito'),
+    sintoma_causa('Escalofrios').
 
 enfermedad(bronquitis) :-
-    sintoma('Tos'),
-    sintoma('Tos con flema'),
-    sintoma('Dolor en pecho'),
-    sintoma('Dolor de cabeza'),
-    sintoma('Cansancio'),
-    sintoma('Dolor de garganta').
+    sintoma_causa('Tos seca'),
+    sintoma_causa('Tos con flema'),
+    sintoma_causa('Dolor de pecho'),
+    sintoma_causa('Dolor de cabeza'),
+    sintoma_causa('Cansancio'),
+    sintoma_causa('Dolor de garganta').
 
 enfermedad(bronquiolitis) :- 
-    sintoma('Tos'),
-    sintoma('Fiebre'),
-    sintoma('Congestion nasal'),
-    sintoma('Mucosidad'),
-    sintoma('Sibilancia'),
-    sintoma('Dificultad para respirar'),
-    sintoma('Infeccion en el oido'),
-    sintoma('Deshidratacion').
+    sintoma_causa('Tos seca'),
+    sintoma_causa('Fiebre'),
+    sintoma_causa('Congestion nasal'),
+    sintoma_causa('Mucosidad'),
+    sintoma_causa('Sibilancia'),
+    sintoma_causa('Dificultad para respirar'),
+    sintoma_causa('Infeccion en el oido'),
+    sintoma_causa('Deshidratacion').
 
 enfermedad(gripe) :-
-    sintoma('Tos'),
-    sintoma('Fiebre'),
-    sintoma('Tos con flema'),
-    sintoma('Congestion nasal'),
-    sintoma('Dolor muscular'),
-    sintoma('Dolor de cabeza'),
-    sintoma('Dolor de garganta'),
-    sintoma('Fatiga').
+    sintoma_causa('Tos seca'),
+    sintoma_causa('Tos con flema'),
+    sintoma_causa('Fiebre'),
+    sintoma_causa('Fatiga'),
+    sintoma_causa('Congestion nasal'),
+    sintoma_causa('Dolor muscular'),
+    sintoma_causa('Dolor de cabeza'),
+    sintoma_causa('Dolor de garganta').
 
 enfermedad(tuberculosis) :-
-    sintoma('Tos con flema'),
-    sintoma('Fiebre'),
-    sintoma('Fatiga'),
-    sintoma('Dolor en pecho'),
-    sintoma('Tos intensa'),
-    sintoma('Sudoracion').
+    sintoma_causa('Tos con flema'),
+    sintoma_causa('Fiebre'),
+    sintoma_causa('Fatiga'),
+    sintoma_causa('Dolor en pecho'),
+    sintoma_causa('Tos intensa'),
+    sintoma_causa('Sudoracion').
+
